@@ -90,7 +90,8 @@ def plot_xstat(x, y, stat1="mean", stat2="rms", name="xbinstat", **kwargs):
     plt.savefig(
         os.path.join(
             kwargs.get("outdir", "."),
-            name + "_" + stat1 + "_" + stat2 + "." + kwargs.get("ext", "pdf"),
+            #name + "_" + stat1 + "_" + stat2 + "." + kwargs.get("ext", "pdf"),
+            name + "_" + "resolution" + "." + kwargs.get("ext", "png"),
         )
     )
 
@@ -172,7 +173,7 @@ def plot_y_hist(x, name="yhist", **kwargs):
     _ax.plot(_xplot, gaussian_like(_xplot, *popt))
     _ax.set_xlim(_range[0], _range[1])
     plt.savefig(
-        os.path.join(kwargs.get("outdir", "."), name + "." + kwargs.get("ext", "pdf"))
+        os.path.join(kwargs.get("outdir", "."), name + "." + kwargs.get("ext", "png"))
     )
     return {
         "stat": {
@@ -247,5 +248,5 @@ def plot_2d_hist_count(x, y, name="hist2D", **kwargs):
     plt.colorbar(im, cax=cax)  # Similar to fig.colorbar(im, cax = cax)
 
     plt.savefig(
-        os.path.join(kwargs.get("outdir", "."), name + "." + kwargs.get("ext", "pdf"))
+        os.path.join(kwargs.get("outdir", "."), name + "." + kwargs.get("ext", "png"))
     )
