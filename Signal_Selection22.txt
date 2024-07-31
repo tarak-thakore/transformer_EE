@@ -1,0 +1,22 @@
+##Use Inclusive/CC/NC in the Final_state_lepton_PDG_code_or_process or use any specific number you want
+## Use 'Any' as the initial pdg if u want any neutrinos
+##Use N in num_proton and num_pion if you want any number of protons and neutrons
+##If the event number reaches the maximum, it will run through all events in the Signal Tree and use all if you want to run 
+#through all the events use 'All'
+
+EventNum:All
+Initial_Nu_Energy_min:0.1
+Initial_Nu_Energy_max:5.0
+Initial_PDG:Any
+Final_state_lepton_PDG_code_or_process:NC
+Proton_KE:0.025
+Pi+-_KE:0.07
+K+-_KE:0.03
+Muon_KE:0.005
+Electron_KE:0.005
+num_proton:1
+num_pion:0
+INPUT_ROOT_FILE:NNBarAtm_hA_BR.100000000.gtrac.root
+OUTPUT_ROOT_FILE:AnyNu_NC_Thresh_p1to5_eventnum_
+OUTPUT_DIR:AnyNu_NC_Thresh_p1to5_eventnum_
+OUTPUT_NAME:AnyNu_NC_Thresh_p1to5_eventnum_
