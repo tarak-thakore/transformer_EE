@@ -99,16 +99,14 @@ def plot_xstat(x, y, stat1="mean", stat2="rms", name="xbinstat", **kwargs):
     return {"bin_x": bin_x, "bin_y": bin_y, "bin_yerr": bin_yerr}
 
 
-def plot_y_hist(x, name="yhist", **kwargs):
-    # pylint: disable=too-many-locals
-    # pylint: disable=unbalanced-tuple-unpacking
+def plot_y_hist(*args, name="yhist", **kwargs):
     """
-    Make a histogram of x and a gaussian fit
+    Make a histogram of the given data sets.
 
     optional:
     parameter       default val
     ----------      -----------
-    bins            50
+    bins            500
     range           (min(x), max(x))
     ext             "pdf"
     xlabel          ""
@@ -117,76 +115,64 @@ def plot_y_hist(x, name="yhist", **kwargs):
     figsize         (8, 6)
     dpi             80
     outdir          "."
+    labels          []
+    colors          []
+    xlim            None
+    ylim            None
+    log             False
+    vline           False
 
     --------------------------
-
-    return: mu, sigma, rms, a
     """
 
-    def gaussian_like(_x, _mu, _sigma, _a):
-        return (
-            _a
-            * (1 / (_sigma * np.sqrt(2 * np.pi)))
-            * np.exp(-(((_x - _mu) / _sigma) ** 2) / 2)
-        )
-
-    stat_mu, stat_sigma = np.mean(x), np.std(x)
-    stat_rms = np.sqrt(np.mean(x**2))
-
-    _range = kwargs.get("range", (-1, 1))
+    _range = kwargs.get("range", None)
+    bins = kwargs.get("bins")
 
     _fig, _ax = plt.subplots(
         1, 1, figsize=kwargs.get("figsize", (8, 6)), dpi=kwargs.get("dpi", 80)
     )
-    _n, _b, _p = _ax.hist(
-        x,
-        bins=kwargs.get("bins", 50),
-        range=_range,
-        weights=kwargs.get("weights", None),
-        histtype="step",
-    )
 
-    popt, _pcov = curve_fit(gaussian_like, (_b[1:] + _b[:-1]) / 2, _n)
+    labels = kwargs.get("labels", [f"Hist {i+1}" for i in range(len(args))])
+    colors = kwargs.get("colors", [None] * len(args))
+
+    for i, x in enumerate(args):
+        _ax.hist(
+            x,
+            bins=kwargs.get("bins"),
+            range=_range,
+            weights=kwargs.get("weights", None),
+            histtype="step",
+            label=labels[i],
+            color=colors[i],
+        )
 
     _ax.set_xlabel(kwargs.get("xlabel", ""), fontsize=14)
-    _ax.set_ylabel(
-        kwargs.get("ylabel", f"NumEvents / {(_b[1] - _b[0]):.3f}\n"), fontsize=14
-    )
+    _ax.set_ylabel(kwargs.get("ylabel", "Number of Events"), fontsize=14)
     _ax.set_title(kwargs.get("title", ""), fontsize=18)
-    _ax.text(
-        0.95,
-        0.95,
-        f"NumEvents : {len(x):.3e}\n\
-            STAT:\n\
-            MEAN : {stat_mu:.1%}\n\
-            RMS : {stat_rms:.1%}\n\
-            Std : {stat_sigma:.1%}\n\
-            \n\
-            Gauss:\n\
-            MEAN : {popt[0]:.1%}\n\
-            Std : {popt[1]:.1%}\n",
-        transform=_ax.transAxes,
-        ha="right",
-        va="top",
-    )
 
-    _xplot = np.linspace(_range[0], _range[1], 100)
-    _ax.plot(_xplot, gaussian_like(_xplot, *popt))
-    _ax.set_xlim(_range[0], _range[1])
+    if labels:
+        _ax.legend()
+
+    if kwargs.get("log", False):
+        _ax.set_yscale('log')
+
+    if kwargs.get("vline", False):
+        _ax.axvline(x=0.0, color='black', linestyle='--')
+
+    if kwargs.get("xrange"):
+        _ax.set_xlim(kwargs["xrange"])
+
+    if kwargs.get("yrange"):
+        _ax.set_ylim(kwargs["yrange"])
+
     plt.savefig(
         os.path.join(kwargs.get("outdir", "."), name + "." + kwargs.get("ext", "png"))
     )
-    return {
-        "stat": {
-            "mu": stat_mu,
-            "sigma": stat_sigma,
-            "rms": stat_rms,
-        },
-        "fit": {
-            "fit_mu": popt[0],
-            "fit_sigma": popt[1],
-        },
-    }
+
+    plt.close(_fig)  # Close the figure after saving to free memory
+
+    return None
+
 
 
 def plot_2d_hist_count(x, y, name="hist2D", **kwargs):
@@ -214,7 +200,7 @@ def plot_2d_hist_count(x, y, name="hist2D", **kwargs):
     return: mu, sigma, rms, a
     """
 
-    _bins = kwargs.get("bins", 50)
+    _bins = kwargs.get("bins", 500)
     _xbins = kwargs.get("xbins", _bins)
     _ybins = kwargs.get("ybins", _bins)
     _xrange = kwargs.get("xrange", (0, 6))
