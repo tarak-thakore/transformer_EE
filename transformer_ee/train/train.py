@@ -114,6 +114,12 @@ class MVtrainer:
 
             for batch_idx, batch in enumerate(self.trainloader):
 
+                ###########################################
+                ###Test printout of batch to check for nans
+
+                #print(batch)
+                ###########################################
+
                 vector_train_batch = batch[0].to(
                     self.gpu_device
                 )  # shape: (batch_size, max_seq_len, vector_dim)
@@ -151,6 +157,16 @@ class MVtrainer:
                 loss.backward()
                 # Calling the step function on an Optimizer makes an update to its
                 # parameters
+
+                ##################
+                ##New code added##
+
+                # Gradient clipping
+                #torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+
+                ##################
+
+                
                 self.optimizer.step()
 
                 batch_train_loss.append(loss)

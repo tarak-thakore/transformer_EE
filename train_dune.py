@@ -4,7 +4,7 @@ from transformer_ee.train import MVtrainer
 
 #with open("transformer_ee/config/input_DUNE_atmo.json", encoding="UTF-8", mode="r") as f:
 #with open("transformer_ee/config/input_DUNE_atmo-4m.json", encoding="UTF-8", mode="r") as f:
-with open("transformer_ee/config/input_DUNE_atmo-E-th.json", encoding="UTF-8", mode="r") as f:
+with open("/home/jbarrow/MLProject2/transformer_EE/transformer_ee/config/input_DUNE_atmo-E-th.json", encoding="UTF-8", mode="r") as f:
     input_d = json.load(f)
 
 
@@ -17,7 +17,7 @@ input_d["model"]["kwargs"]["num_layers"] = 5
 input_d["optimizer"]["name"] = "Adam"
 input_d["optimizer"]["kwargs"]["lr"] = 0.001
 #input_d["optimizer"]["kwargs"]["momentum"] = 0.9
-input_d["save_path"] = "/home/tthakore/save/model/DUNE_atmo/"
+input_d["save_path"] = "/home/jbarrow/MLProject2/save/model/DUNE_atmo/"
 # input_d["weight"] = {"name": "FlatSpectraWeights", "kwargs": {"maxweight": 5, "minweight": 0.2}}
 
 

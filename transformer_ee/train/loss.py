@@ -9,6 +9,16 @@ import torch
 
 
 # base loss functions
+def MAE_loss(output, target, weight=None):
+    """
+    mean absolute error loss
+    """
+    if weight is None:
+        return torch.mean(torch.abs(output - target))
+    #print("output = ",output," and target = ", target,", so we have torch.mean(torch.abs(output - target)) = ",torch.mean(torch.abs(output - target)))
+    return torch.mean(weight * torch.abs(output - target))
+
+
 def MSE_loss(output, target, weight=None):
     """
     mean squared error loss
@@ -18,14 +28,15 @@ def MSE_loss(output, target, weight=None):
         return torch.mean((output - target) ** 2)
     return torch.mean(weight * (output - target) ** 2)
 
-
-def MAE_loss(output, target, weight=None):
+#This one is experimental...added by J. L. Barrow
+def MCE_loss(output, target, weight=None):
     """
-    mean absolute error loss
+    mean cubic error loss
     """
+    # Note: torch.mean() returns the mean value of all elements in the input tensor, which is a scalar value.
     if weight is None:
-        return torch.mean(torch.abs(output - target))
-    return torch.mean(weight * torch.abs(output - target))
+        return torch.mean((output - target) ** 3)
+    return torch.mean(weight * (output - target) ** 3)
 
 
 def MAPE_loss(output, target, weight=None):
@@ -52,9 +63,8 @@ def get_loss_function(loss_function_name, output, target, weight=None):
     """
     return loss_function[loss_function_name](output, target, weight)
 
-
+######
 # complex loss functions utilize base loss functions
-
 
 def linear_combination_loss(output, target, weight=None, **kwargs):
     """
@@ -82,3 +92,14 @@ def linear_combination_loss(output, target, weight=None, **kwargs):
             output[:, i], target[:, i], torch.squeeze(weight)
         )
     return linear_loss
+
+#Highly experimental--added by J. L. Barrow
+def mass_constraint_loss(output, target):  #, weight=None, *kwargs):
+    """
+    Attempt to make a loss function which contrains the mass of the neutrino to zero; for use only with (E,px,py,pz)
+    variables as targets
+    """
+    mass_neutrino_output = output[:,0] ** 2 - output[:,1] ** 2 - output[:,2] ** 2 - output[:,3] ** 2
+    mass_neutrino_target = target[:,0] ** 2 - target[:,1] ** 2 - target[:,2] ** 2 - target[:,3] ** 2
+    mass_loss = mass_neutrino_output - mass_neutrino_target
+    return mass_loss

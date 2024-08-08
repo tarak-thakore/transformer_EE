@@ -63,7 +63,29 @@ class Transformer_EE_MV(nn.Module):
         y = self.linear_scalar2(y)
         y = F.relu(y)
 
-        output = torch.cat((output, torch.squeeze(y)), 1)
+        ###########################
+        ###Begin of new code add###
+        
+        #print("    Original Output shape: ", output.shape)
+        #print("    Original y shape before squeeze: ", y.shape)
+        
+        #y = torch.squeeze(y)  # Ensure y is 2D after squeeze
+        #print("        Final y shape after squeeze: ", torch.squeeze(y).shape)
+        
+        #if len(y.shape) == 1:
+        #    y = y.unsqueeze(1)
+        
+        #output = torch.cat((output, y), 1)
+       
+        ####End of new code add###
+        ##########################
+        
+        ###Commented out this line for testing
+        #output = torch.cat((output, torch.squeeze(y)), 1)
+        #Corrected line from Shaowei (seems to work)
+        output = torch.cat((output, y), 1)
+        #Check what has changed
+        #print("        Final concatenated Output shape: ", output.shape)
 
         output = self.linear1(output)
         output = F.relu(output)
