@@ -1,10 +1,11 @@
 """Module for binning data and plotting histograms."""
 import os
+import math
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy import stats
 from scipy.optimize import curve_fit
-
+from matplotlib.colors import LogNorm
 
 def plot_xstat(x, y, stat1="mean", stat2="rms", name="xbinstat", **kwargs):
     # pylint: disable=too-many-locals
@@ -228,14 +229,18 @@ def plot_2d_hist_count(x, y, name="hist2D", **kwargs):
         1, 1, figsize=kwargs.get("figsize", (8, 8)), dpi=kwargs.get("dpi", 80)
     )
     X, Y = np.meshgrid(xedges, yedges)
-    im = _ax.pcolormesh(X, Y, H, edgecolors="face")
+
+    # Apply logarithmic normalization if requested
+    norm = LogNorm() if kwargs.get('zscale') == 'log' else None
+    
+    im = _ax.pcolormesh(X, Y, H, edgecolors="face", norm=norm)
     _ax.set_xlabel(kwargs.get("xlabel", ""), fontsize=14)
     _ax.set_ylabel(kwargs.get("ylabel", ""), fontsize=14)
     _ax.set_title(kwargs.get("title", ""), fontsize=16)
 
     if(kwargs.get('scale')=='log'):
       _ax.set_xscale('log')
-      _ax.set_yscale('log')  
+      _ax.set_yscale('log')
 
     cax = _fig.add_axes(
         [
