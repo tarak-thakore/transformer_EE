@@ -51,6 +51,7 @@ def MAPE_loss(output, target, weight=None):
 # add base loss functions to loss_function dictionary
 loss_function = {
     "mean squared error": MSE_loss,
+    "mean cubic error": MCE_loss,
     "mean absolute error": MAE_loss,
     "mean absolute percentage error": MAPE_loss,
 }

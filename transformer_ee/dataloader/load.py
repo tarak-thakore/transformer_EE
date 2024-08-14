@@ -1,13 +1,7 @@
-"""
-Load the data
-"""
-
 import numpy as np
 import pandas as pd
 import torch
-
 from transformer_ee.dataloader.pd_dataset import Normalized_pandas_Dataset_with_cache
-
 
 def get_sample_indices(sample_size: int, config) -> tuple:
     """
@@ -17,9 +11,7 @@ def get_sample_indices(sample_size: int, config) -> tuple:
     config:         the configuration dictionary
     return:         the indices of train, validation and test sets
     """
-
     seed = config["seed"]
-
     _indices = np.arange(sample_size)
     np.random.seed(seed)
     np.random.shuffle(_indices)
@@ -33,18 +25,26 @@ def get_sample_indices(sample_size: int, config) -> tuple:
     if isinstance(valid_size, float):
         valid_size = int(sample_size * valid_size)
 
-    train_indicies = _indices[: sample_size - valid_size - test_size]
-    valid_indicies = _indices[
-        sample_size - valid_size - test_size : sample_size - test_size
-    ]
-    test_indicies = _indices[sample_size - test_size :]
+    train_indices = _indices[: sample_size - valid_size - test_size]
+    valid_indices = _indices[sample_size - valid_size - test_size : sample_size - test_size]
+    test_indices = _indices[sample_size - test_size :]
 
-    print("train indicies size:\t", len(train_indicies))
-    print("valid indicies size:\t", len(valid_indicies))
-    print("test  indicies size:\t", len(test_indicies))
+    print("train indices size:\t", len(train_indices))
+    print("valid indices size:\t", len(valid_indices))
+    print("test  indices size:\t", len(test_indices))
 
-    return train_indicies, valid_indicies, test_indicies
+    return train_indices, valid_indices, test_indices
 
+def save_indices(indices, filename):
+    """
+    Save the indices to a text file.
+    
+    indices: The indices to save.
+    filename: The file to save the indices in.
+    """
+    with open(filename, 'w') as f:
+        for idx in indices:
+            f.write(f"{idx}\n")
 
 def get_train_valid_test_dataloader(config: dict):
     """
@@ -53,6 +53,10 @@ def get_train_valid_test_dataloader(config: dict):
     """
     df = pd.read_csv(config["data_path"])
     train_idx, valid_idx, test_idx = get_sample_indices(len(df), config)
+    
+    # Save the test indices
+    save_indices(test_idx, config["save_path"]+'test_indices.txt')
+
     train_set = Normalized_pandas_Dataset_with_cache(
         config, df.iloc[train_idx].reset_index(drop=True, inplace=False)
     )
