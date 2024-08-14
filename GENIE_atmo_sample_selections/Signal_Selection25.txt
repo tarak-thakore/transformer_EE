@@ -1,0 +1,16 @@
+EventNum:All
+Initial_Nu_Energy_min:0.1
+Initial_Nu_Energy_max:5.0
+Initial_PDG:Any
+Final_state_lepton_PDG_code_or_process:CC
+Proton_KE:0.025
+Pi+-_KE:0.07
+K+-_KE:0.03
+Muon_KE:0.005
+Electron_KE:0.005
+num_proton:N
+num_pion:N
+INPUT_ROOT_FILE:NNBarAtm_hA_BR.100000000.gtrac.root
+OUTPUT_ROOT_FILE:AnyNu_CC_Thresh_p1to5_eventnum_
+OUTPUT_DIR:AnyNu_CC_Thresh_p1to5_eventnum_
+OUTPUT_NAME:AnyNu_CC_Thresh_p1to5_eventnum_
