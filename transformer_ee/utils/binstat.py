@@ -6,6 +6,8 @@ import numpy as np
 from scipy import stats
 from scipy.optimize import curve_fit
 from matplotlib.colors import LogNorm
+from matplotlib.patches import Circle  # Import the Circle class
+from matplotlib.patches import Ellipse  # Import the Ellipse class
 
 def plot_xstat(x, y, stat1="mean", stat2="rms", name="xbinstat", **kwargs):
     # pylint: disable=too-many-locals
@@ -240,3 +242,125 @@ def plot_2d_hist_count(x, y, name="hist2D", **kwargs):
     plt.savefig(
         os.path.join(kwargs.get("outdir", "."), name + "." + kwargs.get("ext", "pdf"))
     )
+
+
+##Experimental
+def plot_2d_hist_contour(x, y, name="hist2D", **kwargs):
+    """
+    Make a 2D histogram of x and y with optional contours, diagonal line, circle, and labels.
+
+    Parameters:
+    - bins: Number of bins for the histogram (default: 500)
+    - xbins, ybins: Number of bins in x and y directions for histogram (default: bins)
+    - bins_contour: Number of bins for contours (default: 50)
+    - xbins_contour, ybins_contour: Number of bins in x and y directions for contours (default: bins_contour)
+    - xrange, yrange: Range for x and y axes (default: (0, 6))
+    - zscale: Scale for the z-axis ('log' for logarithmic, default: None)
+    - scale: Scale for x and y axes ('log' for logarithmic, default: None)
+    - contours: Whether to draw contours (True/False, default: False)
+    - histogram: Whether to draw the histogram (True/False, default: True)
+    - diag_line: Whether to draw a diagonal line (True/False, default: False)
+    - circle: Whether to draw a circle centered at (0,0) (True/False, default: False)
+    - contour_labels: Whether to add labels to the contours (True/False, default: True)
+    - ext: File extension for saving the plot (default: "pdf")
+    - xlabel, ylabel, title: Labels and title for the plot (default: empty)
+    - figsize, dpi: Figure size and resolution (default: (8, 8), 80)
+    - outdir: Output directory for saving the plot (default: ".")
+    """
+
+    # Histogram binning
+    _bins = kwargs.get("bins", 500)
+    _xbins = kwargs.get("xbins", _bins)
+    _ybins = kwargs.get("ybins", _bins)
+
+    # Contour binning
+    _bins_contour = kwargs.get("bins_contour", 50)
+    _xbins_contour = kwargs.get("xbins_contour", _bins_contour)
+    _ybins_contour = kwargs.get("ybins_contour", _bins_contour)
+
+    _xrange = kwargs.get("xrange", (0, 6))
+    _yrange = kwargs.get("yrange", (0, 6))
+
+    # Create the 2D histogram for the contours
+    H_contour, xedges_contour, yedges_contour = np.histogram2d(
+        x, y, bins=(_xbins_contour, _ybins_contour), range=(_xrange, _yrange)
+    )
+    H_contour = H_contour.T
+    X_contour, Y_contour = np.meshgrid(xedges_contour, yedges_contour)
+
+    _fig, _ax = plt.subplots(
+        1, 1, figsize=kwargs.get("figsize", (8, 8)), dpi=kwargs.get("dpi", 80)
+    )
+
+    # Plot the histogram if requested
+    if kwargs.get('histogram', True):
+        H, xedges, yedges = np.histogram2d(
+            x, y, bins=(_xbins, _ybins), range=(_xrange, _yrange)
+        )
+        H = H.T
+        X, Y = np.meshgrid(xedges, yedges)
+        
+        # Apply logarithmic normalization if requested
+        norm = LogNorm() if kwargs.get('zscale') == 'log' else None
+
+        im = _ax.pcolormesh(X, Y, H, edgecolors="face", norm=norm)
+        cax = _fig.add_axes(
+            [
+                _ax.get_position().x1 + 0.01,
+                _ax.get_position().y0,
+                0.02,
+                _ax.get_position().height,
+            ]
+        )
+        plt.colorbar(im, cax=cax)  # Similar to fig.colorbar(im, cax=cax)
+
+    # Plot contours if requested
+    if kwargs.get('contours', False):
+        # Flatten and sort the histogram values in descending order
+        H_sorted = np.sort(H_contour.ravel())[::-1]
+        H_cumsum = np.cumsum(H_sorted)
+        H_cumsum /= H_cumsum[-1]  # Normalize cumulative sum to get percentages
+
+        # Define contour levels for 68%, 90%, and 95%
+        levels = [0.95, 0.90, 0.68]
+        contour_levels = [H_sorted[np.searchsorted(H_cumsum, level)] for level in levels]
+
+        # Ensure contour levels are strictly increasing
+        contour_levels = np.unique(contour_levels)
+        contour_levels = np.sort(contour_levels)
+
+        # Plot contours
+        CS = _ax.contour(X_contour[:-1, :-1], Y_contour[:-1, :-1], H_contour, levels=contour_levels,
+                    colors=['red', 'red', 'red'],
+                    linestyles=['solid', 'dashed', 'dotted'])
+
+        # Add labels to contours if requested
+        if kwargs.get('contour_labels', True):
+            fmt = {contour_levels[0]: '95%', contour_levels[1]: '90%', contour_levels[2]: '68%'}
+            _ax.clabel(CS, CS.levels, inline=True, fontsize=15, fmt=fmt)
+
+    _ax.set_xlabel(kwargs.get("xlabel", ""), fontsize=14)
+    _ax.set_ylabel(kwargs.get("ylabel", ""), fontsize=14)
+    _ax.set_title(kwargs.get("title", ""), fontsize=16)
+
+    # Plot a diagonal line if requested
+    if kwargs.get('diag_line', False):
+        _ax.plot([_xrange[0], _xrange[1]], [_yrange[0], _yrange[1]], color='darkorange', lw=2)
+
+    # Plot a circle centered at (0,0) with a radius of 10 if requested
+    if kwargs.get('circle', False):
+        radius = kwargs.get('radius', 10)
+        circle = Circle((0, 0), radius, color='darkorange', fill=False, lw=2)
+        _ax.add_patch(circle)
+
+    # Plot an ellipse centered at (0,0) with specified semimajor and semiminor axes if requested
+    if kwargs.get('ellipse', False):
+        x_semimajor = kwargs.get('x_semimajor', 10)
+        y_semiminor = kwargs.get('y_semiminor', 5)
+        ellipse = Ellipse((0, 0), width=2*x_semimajor, height=2*y_semiminor, color='darkorange', fill=False, lw=2)
+        _ax.add_patch(ellipse)
+
+    plt.savefig(
+        os.path.join(kwargs.get("outdir", "."), name + "." + kwargs.get("ext", "pdf"))
+    )
+    plt.show()
