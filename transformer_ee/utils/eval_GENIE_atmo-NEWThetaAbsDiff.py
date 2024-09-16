@@ -215,24 +215,51 @@ plt.close()
 #Energy resolutions as a function of Cos_Theta resolutions, all different types
 binstat.plot_2d_hist_count(E_nu_res_percent,Cos_Theta_nu_res_percent,name=plotpath +"/new_plots/E_nu_res_percent_vs_Cos_Theta_nu_res_percent",xrange=(-100.0,100.0),yrange=(-100.0,100.0),xbins=200,ybins=200,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Percent (%)",ylabel="CosTheta Resolution, Percent (%)")
 plt.close()
+binstat.plot_2d_hist_contour(E_nu_res_percent,Cos_Theta_nu_res_percent,name=plotpath +"/new_plots/E_nu_res_percent_vs_Cos_Theta_nu_res_percent_wContour",xrange=(-100.0,100.0),yrange=(-100.0,100.0),xbins=200,ybins=200,xbins_contour=25,ybins_contour=25,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Percent (%)",ylabel="CosTheta Resolution, Percent (%)",contours=True,contour_labels=True,histogram=True,ellipse=True,x_semimajor=10.0,y_semiminor=20.0)
+plt.close()
+
 binstat.plot_2d_hist_count(E_nu_res_percent,Cos_Theta_nu_res_percent_diff,name=plotpath +"/new_plots/E_nu_res_percent_vs_Cos_Theta_nu_res_percent_diff",xrange=(-100.0,100.0),yrange=(-100.0,100.0),xbins=200,ybins=200,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Percent (%)",ylabel="CosTheta Resolution, Percent Difference (%)")
 plt.close()
-binstat.plot_2d_hist_count(E_nu_res_percent,Cos_Theta_nu_res_abs_diff,name=plotpath +"/new_plots/E_nu_res_percent_vs_Cos_Theta_nu_res_abs_diff",xrange=(-100.0,100.0),yrange=(-2.0,2.0),xbins=200,ybins=200,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Percent (%)",ylabel="CosTheta Resolution, Absolute Difference")
+binstat.plot_2d_hist_contour(E_nu_res_percent,Cos_Theta_nu_res_percent_diff,name=plotpath +"/new_plots/E_nu_res_percent_vs_Cos_Theta_nu_res_percent_diff_wContour",xrange=(-100.0,100.0),yrange=(-100.0,100.0),xbins=200,ybins=200,xbins_contour=25,ybins_contour=25,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Percent (%)",ylabel="CosTheta Resolution, Percent Difference (%)",contours=True,contour_labels=True,histogram=True,ellipse=True,x_semimajor=10.0,y_semiminor=20.0)
 plt.close()
+
+binstat.plot_2d_hist_count(E_nu_res_percent,Cos_Theta_nu_res_abs_diff,name=plotpath +"/new_plots/E_nu_res_percent_vs_Cos_Theta_nu_res_abs_diff",xrange=(-100.0,100.0),yrange=(-1.0,1.0),xbins=200,ybins=200,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Percent (%)",ylabel="CosTheta Resolution, Absolute Difference")
+plt.close()
+binstat.plot_2d_hist_contour(E_nu_res_percent,Cos_Theta_nu_res_abs_diff,name=plotpath +"/new_plots/E_nu_res_percent_vs_Cos_Theta_nu_res_abs_diff_wContour",xrange=(-100.0,100.0),yrange=(-1.0,1.0),xbins=200,ybins=200,xbins_contour=25,ybins_contour=25,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Percent (%)",ylabel="CosTheta Resolution, Absolute Difference",contours=True,contour_labels=True,histogram=True,ellipse=True,x_semimajor=10.0,y_semiminor=0.2)
+plt.close()
+
 binstat.plot_2d_hist_count(E_nu_res_percent_diff,Cos_Theta_nu_res_percent,name=plotpath +"/new_plots/E_nu_res_percent_diff_vs_Cos_Theta_nu_res_percent",xrange=(-100.0,100.0),yrange=(-100.0,100.0),xbins=200,ybins=200,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Percent Difference (%)",ylabel="CosTheta Resolution, Percent (%)")
 plt.close()
+binstat.plot_2d_hist_contour(E_nu_res_percent_diff,Cos_Theta_nu_res_percent,name=plotpath +"/new_plots/E_nu_res_percent_diff_vs_Cos_Theta_nu_res_percent_wContour",xrange=(-100.0,100.0),yrange=(-100.0,100.0),xbins=200,ybins=200,xbins_contour=25,ybins_contour=25,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Percent Difference (%)",ylabel="CosTheta Resolution, Percent( %)",contours=True,contour_labels=True,histogram=True,ellipse=True,x_semimajor=10.0,y_semiminor=20.0)
+plt.close()
+
 binstat.plot_2d_hist_count(E_nu_res_percent_diff,Cos_Theta_nu_res_percent_diff,name=plotpath +"/new_plots/E_nu_res_percent_diff_vs_Cos_Theta_nu_res_percent_diff",xrange=(-100.0,100.0),yrange=(-100.0,100.0),xbins=200,ybins=200,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Percent Difference (%)",ylabel="CosTheta Resolution, Percent Difference (%)")
 plt.close()
+binstat.plot_2d_hist_contour(E_nu_res_percent_diff,Cos_Theta_nu_res_percent_diff,name=plotpath +"/new_plots/E_nu_res_percent_diff_vs_Cos_Theta_nu_res_percent_diff_wContour",xrange=(-100.0,100.0),yrange=(-100.0,100.0),xbins=200,ybins=200,xbins_contour=25,ybins_contour=25,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Percent Difference (%)",ylabel="CosTheta Resolution, Percent Difference (%)",contours=True,contour_labels=True,histogram=True,ellipse=True,x_semimajor=10.0,y_semiminor=20.0)
+plt.close()
+
 binstat.plot_2d_hist_count(E_nu_res_percent_diff,Cos_Theta_nu_res_abs_diff,name=plotpath +"/new_plots/E_nu_res_percent_diff_vs_Cos_Theta_nu_res_abs_diff",xrange=(-100.0,100.0),yrange=(-2.0,2.0),xbins=200,ybins=200,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Percent Difference (%)",ylabel="CosTheta Resolution, Absolute Difference")
 plt.close()
+binstat.plot_2d_hist_contour(E_nu_res_percent_diff,Cos_Theta_nu_res_abs_diff,name=plotpath +"/new_plots/E_nu_res_percent_diff_vs_Cos_Theta_nu_res_abs_diff_wContour",xrange=(-100.0,100.0),yrange=(-2.0,2.0),xbins=200,ybins=200,xbins_contour=25,ybins_contour=25,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Percent Difference (%)",ylabel="CosTheta Resolution, Absolute Difference",contours=True,contour_labels=True,histogram=True,ellipse=True,x_semimajor=10.0,y_semiminor=0.2)
+plt.close()
+
 binstat.plot_2d_hist_count(E_nu_res_abs_diff,Cos_Theta_nu_res_percent,name=plotpath +"/new_plots/E_nu_res_abs_diff_vs_Cos_Theta_nu_res_percent",xrange=(-1.2,1.2),yrange=(-100.0,100.0),xbins=200,ybins=200,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Absolute Difference (GeV)",ylabel="CosTheta Resolution, Percent (%)")
 plt.close()
+binstat.plot_2d_hist_contour(E_nu_res_abs_diff,Cos_Theta_nu_res_percent,name=plotpath +"/new_plots/E_nu_res_abs_diff_vs_Cos_Theta_nu_res_percent_wContour",xrange=(-1.2,1.2),yrange=(-100.0,100.0),xbins=200,ybins=200,xbins_contour=25,ybins_contour=25,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Absolute Difference (GeV)",ylabel="CosTheta Resolution, Percent (%)",contours=True,contour_labels=True,histogram=True,ellipse=True,x_semimajor=0.25,y_semiminor=20.0)
+plt.close()
+                           
 binstat.plot_2d_hist_count(E_nu_res_abs_diff,Cos_Theta_nu_res_percent_diff,name=plotpath +"/new_plots/E_nu_res_abs_diff_vs_Cos_Theta_nu_res_percent_diff",xrange=(-1.2,1.2),yrange=(-100.0,100.0),xbins=200,ybins=200,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Absolute Difference (GeV)",ylabel="CosTheta Resolution, Percent Difference (%)")
 plt.close()
+binstat.plot_2d_hist_contour(E_nu_res_abs_diff,Cos_Theta_nu_res_percent_diff,name=plotpath +"/new_plots/E_nu_res_abs_diff_vs_Cos_Theta_nu_res_percent_diff_wContour",xrange=(-1.2,1.2),yrange=(-100.0,100.0),xbins=200,ybins=200,xbins_contour=25,ybins_contour=25,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Absolute Difference (GeV)",ylabel="CosTheta Resolution, Percent Difference (%)",contours=True,contour_labels=True,histogram=True,ellipse=True,x_semimajor=0.25,y_semiminor=20.0)
+plt.close()
+
 binstat.plot_2d_hist_count(E_nu_res_abs_diff,Cos_Theta_nu_res_abs_diff,name=plotpath +"/new_plots/E_nu_res_abs_diff_vs_Cos_Theta_nu_res_abs_diff",xrange=(-1.2,1.2),yrange=(-2.0,2.0),xbins=200,ybins=200,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Absolute Difference (GeV)",ylabel="CosTheta Resolution, Absolute Difference")
+plt.close()
+binstat.plot_2d_hist_contour(E_nu_res_abs_diff,Cos_Theta_nu_res_abs_diff,name=plotpath +"/new_plots/E_nu_res_abs_diff_vs_Cos_Theta_nu_res_abs_diff",xrange=(-1.2,1.2),yrange=(-2.0,2.0),xbins=200,ybins=200,xbins_contour=25,ybins_contour=25,title="Overall Performance of Kinematic Reconstruction",scale='linear',zscale='log',xlabel="Energy Resolution, Absolute Difference (GeV)",ylabel="CosTheta Resolution, Absolute Difference",contours=True,contour_labels=True,histogram=True,ellipse=True,x_semimajor=0.25,y_semiminor=0.2)
 plt.close()
 
 
+#Energy resolution vs true energy
 
 
 
